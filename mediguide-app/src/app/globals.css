@@ -1,0 +1,677 @@
+@import "tailwindcss";
+
+/* ============================================
+   PREMIUM DESIGN SYSTEM - MediGuide Pro
+   ============================================ */
+
+@theme inline {
+  /* Primary Color Palette - Refined Emerald */
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+  --color-primary-950: #022c22;
+
+  /* Surface Colors - Premium Neutrals */
+  --color-surface: #f8fafc;
+  --color-surface-dim: #e2e8f0;
+  --color-surface-bright: #f8fafc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f1f5f9;
+  --color-surface-container: #e2e8f0;
+  --color-surface-container-high: #cbd5e1;
+  --color-surface-container-highest: #94a3b8;
+
+  /* Text Colors */
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #475569;
+  --color-on-surface-muted: #64748b;
+
+  /* Inverse Colors */
+  --color-inverse-surface: #1e293b;
+  --color-inverse-on-surface: #f1f5f9;
+
+  /* Outline Colors */
+  --color-outline: #94a3b8;
+  --color-outline-variant: #cbd5e1;
+  --color-outline-subtle: #e2e8f0;
+
+  /* Primary Semantic Colors */
+  --color-primary: #059669;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #d1fae5;
+  --color-on-primary-container: #022c22;
+  --color-inverse-primary: #6ee7b7;
+
+  /* Secondary - Rose/Pink for alerts */
+  --color-secondary: #e11d48;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #ffe4e6;
+  --color-on-secondary-container: #881337;
+
+  /* Tertiary - Blue for info */
+  --color-tertiary: #0284c7;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #e0f2fe;
+  --color-on-tertiary-container: #0c4a6e;
+
+  /* Error States */
+  --color-error: #dc2626;
+  --color-on-error: #ffffff;
+  --color-error-container: #fef2f2;
+  --color-on-error-container: #7f1d1d;
+
+  /* Warning States */
+  --color-warning: #f59e0b;
+  --color-on-warning: #ffffff;
+  --color-warning-container: #fffbeb;
+  --color-on-warning-container: #78350f;
+
+  /* Success States */
+  --color-success: #059669;
+  --color-on-success: #ffffff;
+  --color-success-container: #ecfdf5;
+  --color-on-success-container: #022c22;
+
+  /* Fixed Color Variants */
+  --color-primary-fixed: #d1fae5;
+  --color-primary-fixed-dim: #6ee7b7;
+  --color-on-primary-fixed: #022c22;
+  --color-on-primary-fixed-variant: #064e3b;
+
+  --color-secondary-fixed: #ffe4e6;
+  --color-secondary-fixed-dim: #fda4af;
+  --color-on-secondary-fixed: #881337;
+  --color-on-secondary-fixed-variant: #be123c;
+
+  --color-tertiary-fixed: #e0f2fe;
+  --color-tertiary-fixed-dim: #7dd3fc;
+  --color-on-tertiary-fixed: #0c4a6e;
+  --color-on-tertiary-fixed-variant: #0369a1;
+
+  /* Background */
+  --color-background: #f8fafc;
+  --color-on-background: #0f172a;
+  --color-surface-variant: #f1f5f9;
+
+  /* Glass Effect Colors */
+  --color-glass-surface: rgba(255, 255, 255, 0.8);
+  --color-glass-border: rgba(255, 255, 255, 0.5);
+  --color-glass-shadow: rgba(0, 0, 0, 0.05);
+
+  /* Typography */
+  --font-display: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 80px;
+
+  /* Border Radius Scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.12);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  --transition-slower: 500ms ease;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+
+  /* Subtle premium background gradient */
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(236, 72, 153, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--color-on-surface);
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--color-on-surface-variant);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-700);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Glass Effect */
+.glass {
+  background: var(--color-glass-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px var(--color-glass-shadow);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Premium Card */
+.premium-card {
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-outline-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.premium-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Screenshot-aligned card radius: compact, premium, not pill-like. */
+.bg-white:is(.rounded-2xl, .rounded-3xl, .rounded-xl):is(.border, .shadow-sm, .shadow-md, .shadow-lg),
+.bg-slate-50:is(.rounded-2xl, .rounded-3xl, .rounded-xl):is(.border, .shadow-sm, .shadow-md, .shadow-lg),
+.bg-emerald-50:is(.rounded-2xl, .rounded-3xl):is(.border, .shadow-sm),
+.bg-rose-50:is(.rounded-2xl, .rounded-3xl):is(.border, .shadow-sm),
+.bg-blue-50:is(.rounded-2xl, .rounded-3xl):is(.border, .shadow-sm),
+.bg-amber-50:is(.rounded-2xl, .rounded-3xl):is(.border, .shadow-sm) {
+  border-radius: 8px;
+}
+
+.bg-white:is(.rounded-2xl, .rounded-3xl, .rounded-xl):is(.border, .shadow-sm, .shadow-md, .shadow-lg) img:is(.rounded-xl, .rounded-2xl),
+.bg-white:is(.rounded-2xl, .rounded-3xl, .rounded-xl):is(.border, .shadow-sm, .shadow-md, .shadow-lg) .rounded-xl:has(img) {
+  border-radius: 8px;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-700) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer Effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent);
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Slide Up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Slide In from Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In from Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Laser Scan Animation */
+@keyframes laserScan {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Sparkline Animation */
+.sparkline {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 2s ease-out forwards;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Squishy Checkbox */
+.squishy-checkbox:checked+div {
+  transform: scale(0.9);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide Scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline-subtle);
+  border-radius: var(--radius-full);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+/* Premium Input */
+.premium-input {
+  background: white;
+  border: 1px solid var(--color-outline-subtle);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.premium-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.premium-input::placeholder {
+  color: var(--color-on-surface-muted);
+}
+
+/* Premium Button */
+.premium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.premium-btn-primary {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+}
+
+.premium-btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+  transform: translateY(-1px);
+}
+
+.premium-btn-primary:active {
+  transform: translateY(0);
+}
+
+.premium-btn-secondary {
+  background: white;
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-outline-subtle);
+}
+
+.premium-btn-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-outline);
+}
+
+.premium-btn-ghost {
+  background: transparent;
+  color: var(--color-on-surface-variant);
+}
+
+.premium-btn-ghost:hover {
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-primary {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.badge-success {
+  background: var(--color-success-container);
+  color: var(--color-on-success-container);
+}
+
+.badge-warning {
+  background: var(--color-warning-container);
+  color: var(--color-on-warning-container);
+}
+
+.badge-error {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.badge-info {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Focus Visible */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  z-index: 9999;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    background: white;
+    background-image: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MediGuide Pro - Precision Healthcare Systems</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        /* New Animated Ambient Background */
+        .ambient-mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: linear-gradient(120deg, #f7f9fb 0%, #e0e3e5 50%, #f7f9fb 100%);
+            overflow: hidden;
+        }
+
+        .mesh-blob {
+            position: absolute;
+            filter: blur(120px);
+            border-radius: 50%;
+            animation: meshMove 20s ease-in-out infinite alternate;
+            opacity: 0.3;
+        }
+
+        .mesh-orchid {
+            background-color: #F5ADCB;
+            width: 60vw;
+            height: 60vw;
+            top: -20%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .mesh-lavender {
+            background-color: #cce5ff;
+            width: 50vw;
+            height: 50vw;
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .mesh-sage {
+            background-color: #98f593;
+            width: 40vw;
+            height: 40vw;
+            top: 30%;
+            left: 40%;
+            animation-delay: -10s;
+        }
+
+        @keyframes meshMove {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10%, 15%) scale(1.1); }
+            100% { transform: translate(-5%, 5%) scale(0.9); }
+        }
+
+        /* Particle Layer */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#89f5e7",
+                        "on-primary-container": "#f4fffc",
+                        "on-tertiary-container": "#fdfcff",
+                        "secondary-fixed": "#9bf896",
+                        "on-secondary-fixed-variant": "#005312",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed-dim": "#93ccff",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "tertiary": "#006194",
+                        "glass-surface": "rgba(255, 255, 255, 0.7)",
+                        "on-surface": "#191c1e",
+                        "on-primary": "#ffffff",
+                        "outline": "#6d7a77",
+                        "secondary": "#086e1e",
+                        "primary": "#00685f",
+                        "clinical-teal": "#0D9488",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#117222",
+                        "tertiary-container": "#007bb9",
+                        "surface-variant": "#e0e3e5",
+                        "on-secondary-fixed": "#002204",
+                        "serum-pink": "#F5ADCB",
+                        "outline-variant": "#bcc9c6",
+                        "secondary-fixed-dim": "#80db7c",
+                        "secondary-container": "#98f593",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-tint": "#006a61",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed": "#cce5ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#3d4947",
+                        "on-tertiary-fixed-variant": "#004b73",
+                        "on-primary-fixed": "#00201d",
+                        "inverse-surface": "#2d3133",
+                        "background": "transparent", /* Made transparent to show ambient bg */
+                        "vital-green": "#429B45",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed": "#001d31",
+                        "glass-border": "rgba(255, 255, 255, 0.4)",
+                        "logic-blue": "#0284C7",
+                        "surface-dim": "#d8dadc",
+                        "surface-bright": "#f7f9fb",
+                        "surface": "transparent", /* Made transparent to show ambient bg */
+                        "primary-container": "#008378",
+                        "inverse-primary": "#6bd8cb",
+                        "surface-container-highest": "#e0e3e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-primary-container/30 selection:text-primary relative min-h-screen">
+<!-- Ambient Background Layer -->
+<div class="ambient-mesh-bg">
+<div class="mesh-blob mesh-orchid"></div>
+<div class="mesh-blob mesh-lavender"></div>
+<div class="mesh-blob mesh-sage"></div>
+</div>
+<canvas id="particle-canvas"></canvas>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 backdrop-blur-xl bg-glass-surface border-b border-glass-border shadow-sm flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 transition-all duration-300">
+<div class="flex items-center gap-gutter">
+<a class="text-headline-lg-mobile md:text-headline-lg font-headline-lg-mobile md:font-headline-lg bg-clip-text text-transparent bg-gradient-to-r from-tertiary to-serum-pink whitespace-nowrap active:scale-95 duration-200" href="#">
+                MediGuide Pro
+            </a>
+<div class="hidden md:flex items-center gap-unit ml-8">
+<!-- Navigation Items -->
+<a class="text-on-surface-variant hover:bg-tertiary/10 transition-colors px-3 py-1 rounded-md text-body-md font-body-md" href="#features">Features</a>
+<a class="text-on-surface-variant hover:bg-tertiary/10 transition-colors px-3 py-1 rounded-md text-body-md font-body-md" href="#how-it-works">How It Works</a>
+<a class="text-on-surface-variant hover:bg-tertiary/10 transition-colors px-3 py-1 rounded-md text-body-md font-body-md" href="#pricing">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-unit">
+<button aria-label="notifications" class="text-on-surface-variant hover:bg-tertiary/10 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="account_circle" class="text-on-surface-variant hover:bg-tertiary/10 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="hidden md:flex items-center justify-center bg-gradient-to-r from-tertiary to-serum-pink text-on-primary px-4 py-2 rounded-full text-body-md font-body-md active:scale-95 duration-200 hover:shadow-md transition-all ml-4">
+                Role Switch
+            </button>
+</div>
+</nav>
+<main class="pt-16 relative z-10">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center justify-center px-margin-mobile md:px-margin-desktop py-20">
+<div class="relative z-10 max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-6 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-glass-surface border border-glass-border w-fit mx-auto lg:mx-0 backdrop-blur-md shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">V 2.0 IS LIVE</span>
+</div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface tracking-tight">
+                        Precision Care, <br/>
+<span class="bg-clip-text text-transparent bg-gradient-to-r from-tertiary to-serum-pink">Intelligently Guided.</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl mx-auto lg:mx-0">
+                        Advanced AI-driven medical analysis, real-time consultation, and proactive health management in a secure, clinical-grade environment.
+                    </p>
+<div class="flex flex-col sm:flex-row items-center gap-4 mt-4 justify-center lg:justify-start">
+<button class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-tertiary to-serum-pink text-on-primary rounded-xl font-body-md text-body-md font-medium hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+                            Start Free Guidance
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="w-full sm:w-auto px-8 py-4 glass-panel text-on-surface rounded-xl font-body-md text-body-md font-medium hover:bg-surface-variant/50 transition-all duration-300 flex items-center justify-center gap-2">
+                            View Demo
+                            <span class="material-symbols-outlined text-[20px]">play_circle</span>
+</button>
+</div>
+<div class="flex items-center gap-4 mt-8 justify-center lg:justify-start">
+<div class="flex -space-x-3">
+<img alt="Doctor avatar" class="w-10 h-10 rounded-full border-2 border-surface shadow-sm object-cover" data-alt="A close-up portrait of a female medical professional with a warm, confident smile, wearing a pristine white clinical coat. The lighting is bright and high-key, highlighting a clean, sophisticated, light-mode medical environment. Soft shadows emphasize a premium, trustworthy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQajbKai14HvllEFk799nNqGeMYMgzub4WeYsCm5kqvQJW_7l58DchqqaYJMHg48XDx0bJw44x-k9EQBFvbrBAEJbWHTh4_QNdU_Pg7A84cyhe-XOz8qUA7pWvDTcp3iJYn1xD9G9td4835aYgnrWvaQA4wwIbwNYm4CHaIIdJp8x7kkWygFWUFwPZ20-oUsq63kwDNkaGKZRujTF3Xi9-2DOl7A3LWtCiDZaCxeizLjzN-VEThhd7j4SGYAfMTAuQ24706lyYNNM"/>
+<img alt="Doctor avatar" class="w-10 h-10 rounded-full border-2 border-surface shadow-sm object-cover" data-alt="A confident male healthcare provider in modern navy blue scrubs, looking directly at the camera. The background is a soft, blurred clinical setting with cool, logic-blue and teal tones. The lighting is crisp, professional, and optimistic, conveying trust and expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYV_nqaxSux9rKHn4N0FjA6sF6O4cH6SUAxc8NbmPKtGATe_rU924L9dIxEWg7yN9jvKFtBV9njznRN4Qn_sIVNuHQDc94YGSXsPdidiZH4v_O-FjS_EXv-FKcm0TRtWODaGqjypGrV5QM3zZc35fbH9jIKh0s5wlnDfBGk3pCFIv38mPVwlQuG9-bCrn-HG92qLdERKr4V7RKIUv4dmlCnYQC-MmyjEYnHXWmmgBBPHJjaXpJUVg9SinrBnhgO1lF11XHh1SZFls"/>
+<img alt="Doctor avatar" class="w-10 h-10 rounded-full border-2 border-surface shadow-sm object-cover" data-alt="A portrait of a female specialist doctor in a sterile, bright medical facility. She wears a stethoscope around her neck. The scene uses a clinical teal color palette with high-key lighting to emphasize cleanliness, modern healthcare, and advanced precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB407h20-YwotND0bEiM7ZIXFRLVNvktCYxg5GTz7EiJ0i6meAt7U0bmGB4cMEWoryWRLpSpgET94_AP4AZwfDpCeynjtp-67Taw_X1d5vG1Y9h8XBhT2lChu_lhNmuKnwZf6Yry1T7z-uTE3RLvdbenHbPs0_eWu82T9tivr0Is-FRs_FywiFwO1AW7Yw-xnEZOrJB9Z7djKdm2GBSR2jOYDaaRol_1quZDIhfoDXVM4Fu55BV7tfZJr4ybuG7EOIs0FiXrQ8k59w"/>
+</div>
+<div class="text-sm font-body-md text-on-surface-variant">
+<span class="font-semibold text-on-surface">5,000+</span> Providers
+                        </div>
+</div>
+</div>
+<div class="relative w-full h-[500px] hidden lg:block floating">
+<div class="absolute inset-0 bg-gradient-to-tr from-tertiary-fixed/40 to-serum-pink/20 rounded-3xl backdrop-blur-3xl transform rotate-3 scale-105"></div>
+<div class="absolute inset-0 glass-panel rounded-3xl p-6 shadow-xl flex flex-col overflow-hidden border border-white/60 bg-white/40">
+<!-- Mock UI inside Hero -->
+<div class="flex justify-between items-center mb-6 border-b border-outline-variant/30 pb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">MediGuide AI</h3>
+<p class="font-label-caps text-label-caps text-secondary-container">Online • Ready</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+<div class="self-end bg-surface-container px-4 py-3 rounded-2xl rounded-tr-sm max-w-[80%] text-body-md font-body-md shadow-sm">
+                                Analyze patient chart #8492 for contraindications with new Amoxicillin prescription.
+                            </div>
+<div class="self-start bg-white/70 backdrop-blur-md px-4 py-3 rounded-2xl rounded-tl-sm max-w-[90%] text-body-md font-body-md shadow-sm flex flex-col gap-2">
+<div class="flex items-center gap-2 text-tertiary text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                                    Analysis Complete
+                                </div>
+<p class="text-on-surface">No major contraindications found. However, patient noted mild nausea with Penicillin class in 2018. Recommend taking with food.</p>
+</div>
+<!-- Vitals Sparkline Mock -->
+<div class="mt-auto bg-white/80 backdrop-blur-md p-4 rounded-xl border border-outline-variant/20 shadow-sm flex items-center justify-between">
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-1">HEART RATE</div>
+<div class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface flex items-baseline gap-1">
+                                        72 <span class="text-sm font-normal text-on-surface-variant">bpm</span>
+</div>
+</div>
+<div class="w-24 h-8 flex items-end gap-1">
+<div class="w-1/6 bg-serum-pink/30 h-1/3 rounded-t-sm"></div>
+<div class="w-1/6 bg-serum-pink/50 h-2/3 rounded-t-sm"></div>
+<div class="w-1/6 bg-serum-pink/80 h-full rounded-t-sm"></div>
+<div class="w-1/6 bg-serum-pink h-1/2 rounded-t-sm"></div>
+<div class="w-1/6 bg-serum-pink/60 h-3/4 rounded-t-sm"></div>
+<div class="w-1/6 bg-serum-pink/40 h-1/3 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Showcase -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop relative z-10" id="features">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Intelligent Capabilities</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">Designed for modern clinical workflows, reducing friction and enhancing precision.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="glass-panel p-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group bg-white/40">
+<div class="w-14 h-14 rounded-xl bg-tertiary-fixed/50 flex items-center justify-center text-tertiary mb-6 group-hover:bg-tertiary-fixed/70 transition-colors">
+<span class="material-symbols-outlined text-[32px]">document_scanner</span>
+</div>
+<h3 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-3">OCR Prescription Analysis</h3>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+                            Instantly digitize handwritten or printed prescriptions with 99.9% accuracy. Automatically flag potential dosing errors or illegible fields.
+                        </p>
+</div>
+<!-- Feature 2 -->
+<div class="glass-panel p-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative overflow-hidden bg-white/40">
+<div class="absolute top-0 right-0 w-32 h-32 bg-serum-pink/20 rounded-bl-full -z-10 blur-xl"></div>
+<div class="w-14 h-14 rounded-xl bg-serum-pink/20 flex items-center justify-center text-serum-pink mb-6 group-hover:bg-serum-pink/30 transition-colors">
+<span class="material-symbols-outlined text-[32px]">forum</span>
+</div>
+<h3 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-3">Real-time Counseling</h3>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+                            Secure, HIPAA-compliant video and chat protocols connecting patients directly to certified pharmacists for medication guidance.
+                        </p>
+</div>
+<!-- Feature 3 -->
+<div class="glass-panel p-8 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group bg-white/40">
+<div class="w-14 h-14 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary mb-6 group-hover:bg-secondary-container/60 transition-colors">
+<span class="material-symbols-outlined text-[32px]">alarm_on</span>
+</div>
+<h3 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-3">Smart Reminders</h3>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+                            Adaptive adherence schedules that adjust based on patient feedback and biometric data inputs, improving long-term outcomes.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden z-10" id="pricing">
+<!-- Background Accents -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-50"></div>
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Transparent Deployment</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Scalable solutions from individual practitioners to enterprise networks.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+<!-- Free Tier -->
+<div class="glass-panel p-8 rounded-3xl border border-outline-variant/30 shadow-sm relative bg-white/60">
+<h3 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-2">Essential</h3>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-headline-lg font-headline-lg text-on-surface">$0</span>
+<span class="text-body-md font-body-md text-on-surface-variant">/mo</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-8 border-b border-outline-variant/30 pb-8">
+                            Core features for independent clinics.
+                        </p>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+                                Up to 500 patient records
+                            </li>
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+                                Basic OCR scanning
+                            </li>
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+                                Standard support
+                            </li>
+</ul>
+<button class="w-full py-3 rounded-xl border border-tertiary text-tertiary font-body-md text-body-md font-medium hover:bg-tertiary/5 transition-colors">
+                            Get Started
+                        </button>
+</div>
+<!-- Premium Tier -->
+<div class="glass-panel p-10 rounded-3xl border border-tertiary/30 shadow-xl relative transform md:scale-105 z-10 bg-white/80">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-tertiary to-serum-pink text-on-primary px-4 py-1 rounded-full text-label-caps font-label-caps font-bold shadow-md">
+                            RECOMMENDED
+                        </div>
+<h3 class="text-headline-lg-mobile font-headline-lg-mobile text-tertiary mb-2">Pro Network</h3>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="text-headline-lg font-headline-lg text-on-surface">$199</span>
+<span class="text-body-md font-body-md text-on-surface-variant">/user/mo</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mb-8 border-b border-outline-variant/30 pb-8">
+                            Full AI integration for multi-site operations.
+                        </p>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-serum-pink text-[20px] filled">check_circle</span>
+                                Unlimited patient records
+                            </li>
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-serum-pink text-[20px] filled">check_circle</span>
+                                Advanced AI Assistant &amp; Analysis
+                            </li>
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-serum-pink text-[20px] filled">check_circle</span>
+                                API access &amp; EHR integrations
+                            </li>
+<li class="flex items-center gap-3 text-body-md font-body-md text-on-surface">
+<span class="material-symbols-outlined text-serum-pink text-[20px] filled">check_circle</span>
+                                24/7 Dedicated Support
+                            </li>
+</ul>
+<button class="w-full py-3 rounded-xl bg-gradient-to-r from-tertiary to-serum-pink text-on-primary font-body-md text-body-md font-medium hover:shadow-lg transition-all">
+                            Start Free Trial
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 bg-glass-surface backdrop-blur-md border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto mt-auto relative z-10">
+<div class="font-headline-lg text-tertiary text-headline-lg-mobile mb-4 md:mb-0">
+            MediGuide Pro
+        </div>
+<div class="flex flex-wrap justify-center gap-6 mb-4 md:mb-0">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-serum-pink hover:underline transition-all opacity-80 hover:opacity-100 uppercase" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-serum-pink hover:underline transition-all opacity-80 hover:opacity-100 uppercase" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-serum-pink hover:underline transition-all opacity-80 hover:opacity-100 uppercase" href="#">HIPAA Compliance</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-serum-pink hover:underline transition-all opacity-80 hover:opacity-100 uppercase" href="#">Contact</a>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-80">
+            © 2024 MediGuide Pro. Precision Healthcare Systems.
+        </div>
+</footer>
+<script>
+    // Lightweight Particle System
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let particles = [];
+    
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    
+    window.addEventListener('resize', resize);
+    resize();
+    
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 4 + 1;
+            this.speedX = Math.random() * 0.5 - 0.25;
+            this.speedY = Math.random() * 0.5 - 0.25;
+            this.opacity = Math.random() * 0.5 + 0.1;
+            // Mixed colors: lavender, sage, orchid
+            const colors = ['rgba(204, 229, 255, ', 'rgba(152, 245, 147, ', 'rgba(245, 173, 203, '];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.pulse = Math.random() * 0.02;
+            this.pulseDir = 1;
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            if (this.x < 0 || this.x > width) this.speedX *= -1;
+            if (this.y < 0 || this.y > height) this.speedY *= -1;
+            
+            this.opacity += this.pulse * this.pulseDir;
+            if (this.opacity > 0.6 || this.opacity < 0.1) this.pulseDir *= -1;
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color + this.opacity + ')';
+            ctx.filter = 'blur(1px)';
+            ctx.fill();
+            ctx.filter = 'none';
+        }
+    }
+    
+    function initParticles() {
+        particles = [];
+        const numParticles = Math.min(Math.floor(width * height / 15000), 100);
+        for (let i = 0; i < numParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    
+    initParticles();
+    animate();
+</script>
+</body></html>

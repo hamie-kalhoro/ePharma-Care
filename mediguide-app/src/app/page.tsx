@@ -1257,7 +1257,10 @@ export default function Storefront() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 shadow-sm max-w-lg mx-auto">
+            <div 
+              className="mx-auto bg-white rounded-3xl py-10 px-6 sm:p-10 md:p-12 text-center border border-slate-100 shadow-sm flex flex-col items-center justify-center"
+              style={{ width: '100%', maxWidth: '32rem', minWidth: 'min(90vw, 300px)' }}
+            >
               <span className="material-symbols-outlined text-6xl text-slate-300 mb-4">search_off</span>
               <h3 className="text-lg font-bold text-slate-800 mb-1">{t.noProductsFound}</h3>
               <p className="text-xs text-slate-500">{t.noProductsDesc}</p>
@@ -1487,11 +1490,14 @@ export default function Storefront() {
                     );
                   })
                 ) : (
-                  <div className="h-full flex flex-col justify-center items-center text-center py-16 space-y-4">
+                  <div 
+                    className="h-full flex flex-col justify-center items-center text-center py-16 px-4 space-y-4"
+                    style={{ width: '100%', minWidth: 'min(90vw, 250px)' }}
+                  >
                     <span className="material-symbols-outlined text-6xl text-slate-200">shopping_cart_off</span>
-                    <div>
+                    <div className="w-full">
                       <h4 className="font-bold text-slate-700 text-sm">{t.emptyCartTitle}</h4>
-                      <p className="text-xs text-slate-400 mt-1 max-w-[220px]">{t.emptyCartDesc}</p>
+                      <p className="text-xs text-slate-400 mt-1">{t.emptyCartDesc}</p>
                     </div>
                     <button 
                       onClick={() => setIsCartOpen(false)}
@@ -1687,11 +1693,11 @@ export default function Storefront() {
                 <span className="material-symbols-outlined text-[28px]">upload_file</span>
               </div>
               <h3 className="font-extrabold text-slate-800 text-xl uppercase tracking-wide leading-tight">{t.uploadPrescriptionTitle}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed max-w-sm mx-auto mb-0">{t.prescriptionDesc}</p>
+              <p className="text-sm text-slate-500 leading-relaxed mb-0">{t.prescriptionDesc}</p>
             </div>
 
             {/* Scan Zone */}
-            <div className="relative border-2 border-dashed border-slate-200 hover:border-emerald-500 rounded-2xl p-6 transition-colors bg-slate-50 flex flex-col items-center justify-center min-h-[180px] overflow-hidden">
+            <div className="relative border-2 border-dashed border-slate-200 hover:border-emerald-500 rounded-2xl p-4 sm:p-6 transition-colors bg-slate-50 flex flex-col justify-center min-h-[180px] overflow-hidden">
               
               {/* Scanning Laser Beam Layer */}
               {isScanning && (
@@ -1712,19 +1718,19 @@ export default function Storefront() {
               />
               
               {!isScanning && !scanComplete ? (
-                <div className="text-center space-y-3 pointer-events-none max-w-xs mx-auto">
+                <div className="w-full text-center space-y-3 pointer-events-none">
                   <span className="material-symbols-outlined text-slate-300 text-5xl">cloud_upload</span>
                   <div className="text-sm font-bold text-slate-700 leading-snug">{t.dragDrop} <span className="text-emerald-600 hover:underline">{t.browse}</span></div>
                   <span className="text-xs text-slate-400 block leading-relaxed">{t.fileSupport}</span>
                 </div>
               ) : isScanning ? (
-                <div className="text-center space-y-3 z-20 max-w-xs mx-auto">
+                <div className="w-full text-center space-y-3 z-20">
                   <span className="material-symbols-outlined text-emerald-600 text-4xl animate-bounce">psychology</span>
                   <div className="text-sm font-bold text-emerald-800">{t.readingLabels}</div>
-                  <div className="text-xs text-slate-400 truncate max-w-[240px]">{uploadedFileName}</div>
+                  <div className="text-xs text-slate-400 truncate">{uploadedFileName}</div>
                 </div>
               ) : (
-                <div className="text-center space-y-3 max-w-xs mx-auto">
+                <div className="w-full text-center space-y-3">
                   <span className="material-symbols-outlined text-emerald-500 text-5xl">check_circle</span>
                   <div className="text-sm font-bold text-emerald-800">{t.prescriptionAnalyzed}</div>
                   <p className="text-xs text-slate-500 leading-relaxed mx-auto mb-0">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import FloatingAIAssistant from "@/components/FloatingAIAssistant";
 
 export const metadata: Metadata = {
   title: "MediGuide Pro | Premium Healthcare Platform",
@@ -47,6 +48,8 @@ export default function RootLayout({
         </a>
 
         {children}
+        
+        <FloatingAIAssistant />
 
         <script id="main-content" />
       </body>

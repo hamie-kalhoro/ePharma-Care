@@ -13,7 +13,7 @@ const recentCases = [
 
 export default function AIAssistant() {
   return (
-    <div className="bg-[#f8fafc] text-slate-800 font-body antialiased min-h-screen">
+    <div className="bg-[#F8F8F6] text-slate-800 font-body antialiased min-h-screen">
       <header className="bg-white/95 border-b border-slate-200 shadow-sm fixed top-0 w-full z-50 backdrop-blur-xl grid grid-cols-[auto_1fr_auto] items-center gap-4 px-4 md:px-8 h-14">
         <div className="flex items-center gap-3 min-w-0">
           <span className="material-symbols-outlined text-emerald-600 text-2xl">ecg_heart</span>
@@ -129,7 +129,7 @@ export default function AIAssistant() {
             </div>
 
             <div className="p-5 border-t border-slate-100 bg-white">
-              <div className="rounded-xl border border-slate-200 bg-[#f8fafc] p-2 flex items-center gap-2">
+              <div className="rounded-xl border border-slate-200 bg-[#F8F8F6] p-2 flex items-center gap-2">
                 <button className="p-2 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-white transition-colors">
                   <span className="material-symbols-outlined">attach_file</span>
                 </button>

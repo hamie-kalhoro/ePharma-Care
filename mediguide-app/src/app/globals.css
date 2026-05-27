@@ -177,6 +177,19 @@ body {
 }
 
 /* ============================================
+   SELECTION HIGHLIGHTING
+   ============================================ */
+::selection {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: inherit;
+}
+
+::-moz-selection {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: inherit;
+}
+
+/* ============================================
    TYPOGRAPHY
    ============================================ */
 
@@ -658,6 +671,79 @@ a:hover {
 
   h4 {
     font-size: 1.125rem;
+  }
+}
+
+/* ============================================
+   SEARCH BEAM ANIMATION (Google-style)
+   ============================================ */
+
+.search-beam-wrapper {
+  position: relative;
+  border-radius: 9999px;
+  padding: 2px;
+  background: #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.search-beam-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 50%,
+    #6ee7b7 60%,
+    #10b981 70%,
+    #059669 80%,
+    #34d399 88%,
+    transparent 95%,
+    transparent 100%
+  );
+  animation: beam-rotate 2.5s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.search-beam-wrapper.beam-active {
+  background: transparent;
+}
+
+.search-beam-wrapper.beam-active::before {
+  opacity: 1;
+}
+
+.search-beam-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 9999px;
+  background: white;
+}
+
+@keyframes beam-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Suggestions dropdown */
+.search-suggestions-enter {
+  animation: suggestions-slide 0.25s ease-out forwards;
+}
+
+@keyframes suggestions-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function AdminDashboard() {
   return (
-    <div className="bg-[#f8fafc] text-slate-800 font-body antialiased min-h-screen flex flex-col relative selection:bg-emerald-500/30 selection:text-emerald-900">
+    <div className="bg-[#F8F8F6] text-slate-800 font-body antialiased min-h-screen flex flex-col relative selection:bg-emerald-500/30 selection:text-emerald-900">
       
       {/* TopNavBar */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-xl border-b border-slate-200 shadow-sm bg-white/95 flex justify-between items-center px-4 md:px-8 h-14 transition-all">
@@ -13,7 +13,6 @@ export default function AdminDashboard() {
         <div className="hidden lg:flex items-center gap-2">
           <Link href="/" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">Storefront</Link>
           <Link href="/patient" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">Patient Portal</Link>
-          <Link href="/ai-assistant" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">AI Consultation</Link>
         </div>
         <div className="flex items-center gap-4">
           <button className="hidden md:block font-jetbrains text-[11px] uppercase text-emerald-600 border border-emerald-600/30 px-3 py-1.5 rounded-full hover:bg-emerald-50 transition-colors active:scale-95 duration-200">Role Switch</button>
@@ -53,9 +52,6 @@ export default function AdminDashboard() {
             </Link>
             <Link href="#" className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-300">
               <span className="material-symbols-outlined">receipt_long</span> Prescription Audits
-            </Link>
-            <Link href="/ai-assistant" className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-300">
-              <span className="material-symbols-outlined">smart_toy</span> AI Moderation
             </Link>
           </div>
         </nav>
@@ -124,7 +120,7 @@ export default function AdminDashboard() {
             {/* AI & Patients Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start mt-5">
               <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-[#f8fafc]">
+                <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-[#F8F8F6]">
                   <div>
                     <h2 className="text-xl font-hanken font-semibold text-slate-800">Safety Review Queue</h2>
                     <p className="text-sm text-slate-500">Escalations that need admin or clinical governance review.</p>
@@ -133,7 +129,7 @@ export default function AdminDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-[#f8fafc] font-jetbrains text-[12px] text-slate-500 border-b border-slate-100 uppercase">
+                      <tr className="bg-[#F8F8F6] font-jetbrains text-[12px] text-slate-500 border-b border-slate-100 uppercase">
                         <th className="px-6 py-4 font-medium">Case</th>
                         <th className="px-6 py-4 font-medium">Status</th>
                         <th className="px-6 py-4 font-medium">Wait Time</th>
@@ -141,7 +137,7 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="text-base text-slate-800 divide-y divide-slate-100">
-                      <tr className="hover:bg-[#f8fafc] transition-colors group cursor-pointer">
+                      <tr className="hover:bg-[#F8F8F6] transition-colors group cursor-pointer">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-semibold text-sm">ER</div>

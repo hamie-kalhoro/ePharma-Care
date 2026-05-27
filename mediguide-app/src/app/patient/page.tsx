@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function PatientDashboard() {
   return (
-    <div className="font-body text-slate-800 min-h-screen bg-[#f8fafc]">
+    <div className="font-body text-slate-800 min-h-screen bg-[#F8F8F6]">
       {/* TopNavBar */}
       <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/95 border-b border-slate-200 shadow-sm flex justify-between items-center px-4 md:px-8 h-14 transition-all duration-300">
         <div className="flex items-center gap-4">
@@ -14,7 +14,6 @@ export default function PatientDashboard() {
         <div className="hidden lg:flex items-center gap-2">
           <Link href="/" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">Storefront</Link>
           <Link href="/admin" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">Admin Control</Link>
-          <Link href="/ai-assistant" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-emerald-700 hover:bg-emerald-50 text-[11px] font-bold uppercase tracking-wider transition-colors">AI Consultation</Link>
         </div>
         <div className="flex items-center gap-3">
           <button className="text-emerald-600 hover:bg-emerald-50 transition-colors active:scale-95 duration-200 p-2 rounded-full border border-transparent hover:border-emerald-100 flex items-center justify-center">
@@ -58,10 +57,6 @@ export default function PatientDashboard() {
             <a className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-300 ease-in-out" href="#">
               <span className="material-symbols-outlined">medication</span>
               <span className="text-base">Prescriptions</span>
-            </a>
-            <a className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-all duration-300 ease-in-out" href="#">
-              <span className="material-symbols-outlined">smart_toy</span>
-              <span className="text-base">AI Assistant</span>
             </a>
           </nav>
         </aside>

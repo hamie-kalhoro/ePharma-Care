@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 
 // Mock Product Data with Premium Unsplash Assets
@@ -130,6 +130,24 @@ const BRAND_LOGOS = [
   { name: 'CeraVe', label: 'CeraVe Skincare' },
   { name: 'Neutrogena', label: 'Neutrogena' }
 ];
+
+// Search Suggestions Data for the Smart Search Dropdown
+const SEARCH_SUGGESTIONS = {
+  popular: [
+    { name: 'Panadol 500mg', category: 'Medicine', icon: 'medication' },
+    { name: 'CeraVe Moisturizer', category: 'Derma', icon: 'dermatology' },
+    { name: 'Baby Diapers', category: 'Baby Care', icon: 'child_care' },
+    { name: 'Vitamin D3', category: 'Nutritions', icon: 'local_pharmacy' },
+    { name: 'Blood Pressure Monitor', category: 'Devices', icon: 'monitor_heart' },
+    { name: 'Sunscreen SPF 50', category: 'Derma', icon: 'wb_sunny' },
+  ],
+  quickActions: [
+    { label: 'Upload Prescription', icon: 'upload_file' },
+    { label: 'Track My Order', icon: 'local_shipping' },
+    { label: 'AI Health Assistant', icon: 'smart_toy' },
+  ],
+  trending: ['Panadol', 'CeraVe', 'Diapers', 'Ensure', 'Surbex Z', 'Neutrogena', 'Centrum'],
+};
 
 /* ======================================================================
    TRANSLATIONS - Full EN / UR dictionary with RTL direction support
@@ -380,6 +398,8 @@ export default function Storefront() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Dropdown States
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -571,6 +591,37 @@ export default function Storefront() {
     localStorage.removeItem('mediguide_jwt_token');
     localStorage.removeItem('mediguide_jwt_user');
   };
+  // Search suggestion & quick action handlers
+  const handleSearchSuggestionClick = (term: string, category: string | null = null) => {
+    setSearchQuery(term);
+    if (category) setActiveCategory(category);
+    setIsSearchFocused(false);
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleQuickActionClick = (label: string) => {
+    setIsSearchFocused(false);
+    if (label === 'Upload Prescription') {
+      setIsPrescriptionModalOpen(true);
+    } else if (label === 'Track My Order') {
+      pushNotification('🚚 Order tracking portal opening soon.');
+    } else if (label === 'AI Health Assistant') {
+      pushNotification('🤖 AI Assistant is now accessible via the floating button in the bottom right corner.');
+    }
+  };
+  // Handle click outside search to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Mount effects to run on page load
   useEffect(() => {
@@ -688,7 +739,7 @@ export default function Storefront() {
   const drawerAnimation = isRTL ? 'animate-[slideRight_0.3s_ease-out]' : 'animate-[slideLeft_0.3s_ease-out]';
 
   return (
-    <div dir={t.dir} className="min-h-screen bg-[#f8fafc] text-slate-800 font-inter selection:bg-emerald-500/30 selection:text-emerald-900 overflow-x-hidden">
+    <div dir={t.dir} className="min-h-screen bg-[#F8F8F6] text-slate-800 font-inter selection:bg-emerald-500/30 selection:text-emerald-900 overflow-x-hidden">
       
       {/* 🌐 Unified Developer & Portal Navigation Gateway */}
       <div className="bg-slate-900 border-b border-slate-800 text-xs py-2.5 px-4 md:px-10 flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -705,9 +756,6 @@ export default function Storefront() {
           </Link>
           <Link href="/admin" className="px-3 py-1 text-slate-400 hover:text-white rounded-md font-semibold text-[10px] uppercase transition-colors whitespace-nowrap">
             {t.adminControl}
-          </Link>
-          <Link href="/ai-assistant" className="px-3 py-1 text-slate-400 hover:text-white rounded-md font-semibold text-[10px] uppercase transition-colors whitespace-nowrap">
-            {t.aiConsultation}
           </Link>
         </div>
       </div>
@@ -775,30 +823,103 @@ export default function Storefront() {
           </div>
 
           {/* Search Bar */}
-          <div className="w-full md:w-[450px] lg:w-[580px]">
-            <div className="relative flex items-center w-full">
-              <div className="absolute inset-y-0 start-0 ps-3.5 flex items-center pointer-events-none">
-                <span className="material-symbols-outlined text-slate-400">search</span>
-              </div>
-              <input 
-                type="text" 
-                className="block w-full ps-10 pe-24 py-3 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all shadow-inner" 
-                placeholder={t.searchPlaceholder}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
+          <div className="w-full md:w-[450px] lg:w-[580px] relative z-40" ref={searchContainerRef}>
+            <div className={`search-beam-wrapper overflow-hidden ${isSearchFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
+              <div className="relative flex items-center w-full search-beam-inner">
+                <div className="absolute inset-y-0 start-0 ps-3.5 flex items-center pointer-events-none z-10">
+                  <span className="material-symbols-outlined text-slate-400">search</span>
+                </div>
+                <input 
+                  type="text" 
+                  className="block w-full ps-10 pe-24 py-3 border-transparent rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white text-sm transition-all z-10 relative" 
+                  placeholder={t.searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearchSuggestionClick(searchQuery);
+                    }
+                  }}
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute end-24 text-slate-400 hover:text-slate-600 z-20"
+                  >
+                    <span className="material-symbols-outlined text-lg mt-1">close</span>
+                  </button>
+                )}
                 <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute end-24 text-slate-400 hover:text-slate-600"
+                  onClick={() => handleSearchSuggestionClick(searchQuery)}
+                  className="absolute end-1 top-1 bottom-1 px-5 bg-emerald-600 text-white font-semibold text-xs rounded-full hover:bg-emerald-700 transition-colors shadow-sm uppercase tracking-wider z-20"
                 >
-                  <span className="material-symbols-outlined text-lg mt-1">close</span>
+                  {t.search}
                 </button>
-              )}
-              <button className="absolute end-1 top-1 bottom-1 px-5 bg-emerald-600 text-white font-semibold text-xs rounded-full hover:bg-emerald-700 transition-colors shadow-sm uppercase tracking-wider">
-                {t.search}
-              </button>
+              </div>
             </div>
+
+            {/* Smart Search Dropdown */}
+            {isSearchFocused && (
+              <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden search-suggestions-enter flex flex-col max-h-[70vh]">
+                <div className="overflow-y-auto p-4 space-y-5">
+                  
+                  {/* Popular Searches */}
+                  <div>
+                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Popular Searches</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {SEARCH_SUGGESTIONS.popular.map((item, idx) => (
+                        <button 
+                          key={idx} 
+                          onClick={() => handleSearchSuggestionClick(item.name, item.category)}
+                          className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors text-left group"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors">
+                            <span className="material-symbols-outlined text-[16px]">{item.icon}</span>
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-slate-800">{item.name}</div>
+                            <div className="text-[10px] text-slate-400 uppercase">{item.category}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Trending Tags */}
+                  <div>
+                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Trending Right Now</h4>
+                    <div className="flex flex-wrap gap-2 px-1">
+                      {SEARCH_SUGGESTIONS.trending.map((tag, idx) => (
+                        <button 
+                          key={idx} 
+                          onClick={() => handleSearchSuggestionClick(tag)}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">trending_up</span>
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+                
+                {/* Quick Actions Footer */}
+                <div className="bg-slate-50 p-3 border-t border-slate-100 flex flex-wrap gap-2">
+                  {SEARCH_SUGGESTIONS.quickActions.map((action, idx) => (
+                    <button 
+                      key={idx} 
+                      onClick={() => handleQuickActionClick(action.label)}
+                      className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors min-w-[120px]"
+                    >
+                      <span className="material-symbols-outlined text-[16px] text-emerald-600">{action.icon}</span>
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Action Trays (Notifications, Settings, Cart) */}
@@ -960,6 +1081,17 @@ export default function Storefront() {
               )}
             </div>
             
+            {/* Account / Sign In */}
+            <Link 
+              href="/login"
+              className="relative flex flex-col items-center cursor-pointer hover:text-emerald-600 text-slate-600 group border-s border-slate-200 ps-5 md:ps-6 outline-none no-underline"
+            >
+              <div className="relative">
+                <span className="material-symbols-outlined text-[27px] group-hover:scale-105 transition-transform text-slate-700">person</span>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider mt-1">{t.signIn || 'Sign In'}</span>
+            </Link>
+
             {/* Cart Button */}
             <button 
               onClick={() => setIsCartOpen(true)}
@@ -983,7 +1115,7 @@ export default function Storefront() {
           <div className="max-w-7xl mx-auto px-4 md:px-10 overflow-x-auto hide-scrollbar">
             <ul className="flex items-center gap-6 py-2.5 min-w-max">
               <li 
-                onClick={() => setActiveCategory('All')}
+                onClick={() => { setActiveCategory('All'); setSearchQuery(''); }}
                 className={`flex items-center gap-2 text-sm font-semibold border-e border-slate-200 pe-6 me-2 cursor-pointer transition-colors ${activeCategory === 'All' ? 'text-emerald-700' : 'text-slate-600 hover:text-emerald-600'}`}
               >
                 <span className="material-symbols-outlined text-[18px]">menu</span> {t.allCategories}
@@ -991,7 +1123,7 @@ export default function Storefront() {
               {CATEGORIES.filter(c => c !== 'All').map(category => (
                 <li 
                   key={category} 
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => { setActiveCategory(category); setSearchQuery(''); }}
                   className={`text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors whitespace-nowrap py-1 ${activeCategory === category ? 'text-emerald-700 border-b-2 border-emerald-600' : 'text-slate-500 hover:text-emerald-600'}`}
                 >
                   {t.categories[category] || category}
@@ -1029,9 +1161,10 @@ export default function Storefront() {
                 </span>
                 <h1 
                   className="text-3xl md:text-5xl font-hanken font-extrabold leading-tight tracking-tight"
+                  style={{ color: '#F8F8F6' }}
                   dangerouslySetInnerHTML={{ __html: t.heroTitle1 }}
                 />
-                <p className="text-emerald-50 text-sm md:text-base font-medium leading-relaxed mb-0" style={{ maxWidth: '34rem' }}>
+                <p className="text-sm md:text-base font-medium leading-relaxed mb-0" style={{ color: '#F8F8F6', maxWidth: '34rem' }}>
                   {t.heroDesc1}
                 </p>
                 <div className="pt-4 flex flex-wrap gap-4">
@@ -1044,6 +1177,7 @@ export default function Storefront() {
                   <button 
                     onClick={() => {
                       setActiveCategory('Medicine');
+                      setSearchQuery('');
                       const element = document.getElementById('products-section');
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
@@ -1073,15 +1207,17 @@ export default function Storefront() {
                 </span>
                 <h1 
                   className="text-3xl md:text-5xl font-hanken font-extrabold leading-tight tracking-tight"
+                  style={{ color: '#F8F8F6' }}
                   dangerouslySetInnerHTML={{ __html: t.heroTitle2 }}
                 />
-                <p className="text-rose-100 text-sm md:text-base font-medium leading-relaxed mb-0" style={{ maxWidth: '34rem' }}>
+                <p className="text-sm md:text-base font-medium leading-relaxed mb-0" style={{ color: '#F8F8F6', maxWidth: '34rem' }}>
                   {t.heroDesc2}
                 </p>
                 <div className="pt-4 flex flex-wrap gap-4">
                   <button 
                     onClick={() => {
                       setActiveCategory('Derma');
+                      setSearchQuery('');
                       const element = document.getElementById('products-section');
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
@@ -1109,7 +1245,7 @@ export default function Storefront() {
 
         {/* Features Strip */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">verified</span>
             </div>
@@ -1118,7 +1254,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.authenticDesc}</p>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">local_shipping</span>
             </div>
@@ -1127,7 +1263,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.fastDeliveryDesc}</p>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">support_agent</span>
             </div>
@@ -1136,7 +1272,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.pharmacistHelpDesc}</p>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">verified_user</span>
             </div>
@@ -1148,7 +1284,7 @@ export default function Storefront() {
         </section>
 
         {/* Brand showcase logo strip */}
-        <section className="bg-white py-6 px-8 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+        <section className="bg-[#EFEEEB] py-6 px-8 rounded-3xl border border-[#EFEEEB] shadow-sm space-y-4">
           <div className="text-center">
             <span className="text-[10px] font-extrabold tracking-widest text-slate-400 uppercase">{t.trustedBrands}</span>
           </div>
@@ -1179,7 +1315,7 @@ export default function Storefront() {
               {CATEGORIES.slice(0, 5).map(cat => (
                 <button 
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => { setActiveCategory(cat); setSearchQuery(''); }}
                   className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${activeCategory === cat ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/10 border-emerald-600' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'}`}
                 >
                   {t.categories[cat] || cat}
@@ -1294,6 +1430,7 @@ export default function Storefront() {
                 <button 
                   onClick={() => {
                     setActiveCategory('Baby Care');
+                    setSearchQuery('');
                     const element = document.getElementById('products-section');
                     element?.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -1321,6 +1458,7 @@ export default function Storefront() {
                 <button 
                   onClick={() => {
                     setActiveCategory('Derma');
+                    setSearchQuery('');
                     const element = document.getElementById('products-section');
                     element?.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -1335,54 +1473,54 @@ export default function Storefront() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-slate-400 py-16 mt-16 border-t border-slate-900">
+      <footer className="bg-[#EFEEEB] text-slate-600 py-16 mt-16 border-t border-[#E5E4E0] font-body">
         <div className="max-w-7xl mx-auto px-4 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white">
+              <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white shadow-sm">
                 <span className="material-symbols-outlined text-xl">local_pharmacy</span>
               </div>
-              <span className="text-xl font-bold font-hanken text-white tracking-tight">MediGuide<span className="text-emerald-500">Store</span></span>
+              <span className="text-xl font-bold font-hanken text-slate-800 tracking-tight">MediGuide<span className="text-emerald-600">Store</span></span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed font-medium">
               {t.footerDesc}
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t.supportActive}</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t.supportActive}</span>
             </div>
           </div>
           
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-wider">{t.productCategories}</h4>
-            <ul className="space-y-2 text-xs">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.prescriptionDrugs}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.cosmeceuticals}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.vitaminsSupps}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.babyCareNutrition}</a></li>
+            <h4 className="text-slate-800 font-hanken font-bold mb-4 uppercase text-sm tracking-wider">{t.productCategories}</h4>
+            <ul className="space-y-2 text-xs font-medium">
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.prescriptionDrugs}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.cosmeceuticals}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.vitaminsSupps}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.babyCareNutrition}</a></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-wider">{t.quickPolicies}</h4>
-            <ul className="space-y-2 text-xs">
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.fastDeliveryPolicy}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.authGuarantee}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.termsOfService}</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">{t.refundPolicy}</a></li>
+            <h4 className="text-slate-800 font-hanken font-bold mb-4 uppercase text-sm tracking-wider">{t.quickPolicies}</h4>
+            <ul className="space-y-2 text-xs font-medium">
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.fastDeliveryPolicy}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.authGuarantee}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.termsOfService}</a></li>
+              <li><a href="#" className="text-slate-500 hover:text-emerald-600 transition-colors">{t.refundPolicy}</a></li>
             </ul>
           </div>
 
           {/* ============================================ */}
-          {/* MAILING LIST — Upgraded high-contrast design */}
+          {/* MAILING LIST */}
           {/* ============================================ */}
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-xs tracking-wider">{t.mailingList}</h4>
-            <p className="text-xs text-slate-400 mb-4">{t.mailingListDesc}</p>
+            <h4 className="text-slate-800 font-hanken font-bold mb-4 uppercase text-sm tracking-wider">{t.mailingList}</h4>
+            <p className="text-xs text-slate-500 mb-4 font-medium">{t.mailingListDesc}</p>
             <form onSubmit={handleSubscribe} className="space-y-3">
               <input 
                 type="email" 
                 placeholder={t.emailPlaceholder}
-                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-sm outline-none text-white placeholder-slate-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" 
+                className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-sm outline-none text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-medium" 
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 disabled={emailSubmitting}
@@ -1391,24 +1529,24 @@ export default function Storefront() {
               <button 
                 type="submit"
                 disabled={emailSubmitting}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer uppercase tracking-wider"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer uppercase tracking-wider"
               >
                 {emailSubmitting ? t.joining : t.join}
               </button>
               {emailStatus && (
-                <p className={`text-xs font-semibold ${emailStatus.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <p className={`text-xs font-semibold ${emailStatus.type === 'success' ? 'text-emerald-600' : 'text-rose-600'}`}>
                   {emailStatus.message}
                 </p>
               )}
             </form>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 md:px-10 mt-16 pt-8 border-t border-slate-900 text-xs text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-10 mt-16 pt-8 border-t border-[#E5E4E0] text-xs text-slate-400 font-medium flex flex-col md:flex-row justify-between items-center gap-4">
           <p>{t.copyright}</p>
           <div className="flex items-center gap-4 text-[24px]">
-            <span className="material-symbols-outlined">payments</span>
-            <span className="material-symbols-outlined">credit_card</span>
-            <span className="material-symbols-outlined">shield_with_heart</span>
+            <span className="material-symbols-outlined text-slate-400">payments</span>
+            <span className="material-symbols-outlined text-slate-400">credit_card</span>
+            <span className="material-symbols-outlined text-slate-400">shield_with_heart</span>
           </div>
         </div>
       </footer>
@@ -1425,10 +1563,10 @@ export default function Storefront() {
           ></div>
           
           <div className="absolute inset-y-0 end-0 flex">
-            <div className={`w-[85vw] sm:w-[450px] shrink-0 bg-white shadow-2xl flex flex-col h-full ${drawerAnimation}`}>
+            <div className={`w-[85vw] sm:w-[450px] shrink-0 bg-[#F8F8F6] shadow-2xl flex flex-col h-full ${drawerAnimation}`}>
               
               {/* Cart Header */}
-              <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+              <div className="px-5 py-4 bg-[#EFEEEB] border-b border-[#EFEEEB] flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-700">shopping_cart</span>
                   <h3 className="font-extrabold text-slate-800 text-sm uppercase tracking-wide">{t.shoppingBag} ({cartItemCount})</h3>
@@ -1448,7 +1586,7 @@ export default function Storefront() {
                     const prod = MOCK_PRODUCTS.find(p => p.id === item.id);
                     if (!prod) return null;
                     return (
-                      <div key={item.id} className="flex gap-4 p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-sm transition-all">
+                      <div key={item.id} className="flex gap-4 p-3 rounded-xl border border-[#EFEEEB] bg-white hover:bg-[#F8F8F6] hover:shadow-sm transition-all">
                         <img 
                           src={prod.image} 
                           alt={prod.name} 
@@ -1511,7 +1649,7 @@ export default function Storefront() {
 
               {/* Cart Footer */}
               {cart.length > 0 && (
-                <div className="p-5 bg-slate-50 border-t border-slate-200 space-y-4">
+                <div className="p-5 bg-[#EFEEEB] border-t border-[#EFEEEB] space-y-4">
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-xs font-medium text-slate-600">
                       <span>{t.subtotalLabel}</span>
@@ -1521,7 +1659,7 @@ export default function Storefront() {
                       <span>{t.deliveryFeeLabel}</span>
                       <span className="font-bold">{deliveryFee === 0 ? t.freeLabel : `${currencySymbol} ${convertPrice(deliveryFee)}`}</span>
                     </div>
-                    <div className="flex justify-between text-sm font-black text-slate-800 pt-2 border-t border-slate-200">
+                    <div className="flex justify-between text-sm font-black text-slate-800 pt-2 border-t border-slate-200/50">
                       <span>{t.grandTotalLabel}</span>
                       <span className="text-emerald-700 font-black text-base">{currencySymbol} {convertPrice(grandTotal)}</span>
                     </div>
@@ -1530,7 +1668,7 @@ export default function Storefront() {
                   <div className="pt-2 grid grid-cols-2 gap-3">
                     <button 
                       onClick={clearCart}
-                      className="py-3 border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors active:scale-95 outline-none"
+                      className="py-3 border border-[#EFEEEB] bg-[#F8F8F6] hover:bg-white text-slate-600 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors active:scale-95 outline-none"
                     >
                       {t.clearAll}
                     </button>
@@ -1586,7 +1724,11 @@ export default function Storefront() {
             className="absolute inset-0 bg-slate-950/65 backdrop-blur-[3.5px] transition-opacity"
           ></div>
           
-          <div className="relative bg-white rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-6 animate-[scaleUp_0.25s_ease-out] max-h-[90vh] overflow-y-auto z-10">
+          <div 
+            dir={t.dir}
+            className="relative bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-100 flex flex-col md:flex-row gap-6 animate-[scaleUp_0.25s_ease-out] max-h-[90vh] overflow-y-auto z-10"
+            style={{ width: 'min(92vw, 48rem)', minWidth: 'min(92vw, 320px)' }}
+          >
             <button 
               onClick={() => setSelectedProduct(null)}
               className="absolute top-4 end-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors"

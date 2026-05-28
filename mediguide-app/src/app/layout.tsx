@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import FloatingAIAssistant from "@/components/FloatingAIAssistant";
-
+import FloatingConsultation from "@/components/FloatingConsultation";
 export const metadata: Metadata = {
   title: "MediGuide Pro | Premium Healthcare Platform",
   description: "Advanced AI-powered healthcare platform with premium pharmacy services, real-time patient monitoring, and intelligent drug interaction analysis. HIPAA-compliant and secure.",
@@ -50,6 +50,7 @@ export default function RootLayout({
         {children}
         
         <FloatingAIAssistant />
+        <FloatingConsultation />
 
         <script id="main-content" />
       </body>

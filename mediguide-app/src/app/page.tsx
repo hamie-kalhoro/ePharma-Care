@@ -553,6 +553,7 @@ export default function Storefront() {
   const [emailInput, setEmailInput] = useState('');
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailStatus, setEmailStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1517,15 +1518,21 @@ export default function Storefront() {
             <h4 className="text-slate-800 font-hanken font-bold mb-4 uppercase text-sm tracking-wider">{t.mailingList}</h4>
             <p className="text-xs text-slate-500 mb-4 font-medium">{t.mailingListDesc}</p>
             <form onSubmit={handleSubscribe} className="space-y-3">
-              <input 
-                type="email" 
-                placeholder={t.emailPlaceholder}
-                className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-sm outline-none text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-medium" 
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                disabled={emailSubmitting}
-                required
-              />
+              <div className={`email-beam-wrapper overflow-hidden ${isEmailFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
+                <div className="relative flex items-center w-full email-beam-inner">
+                  <input 
+                    type="email" 
+                    placeholder={t.emailPlaceholder}
+                    className="w-full bg-white border-none px-4 py-3 text-sm outline-none text-slate-800 placeholder-slate-400 focus:outline-none transition-all font-medium rounded-[calc(var(--radius-xl)-2px)] relative z-10" 
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    onFocus={() => setIsEmailFocused(true)}
+                    onBlur={() => setIsEmailFocused(false)}
+                    disabled={emailSubmitting}
+                    required
+                  />
+                </div>
+              </div>
               <button 
                 type="submit"
                 disabled={emailSubmitting}
@@ -1818,9 +1825,12 @@ export default function Storefront() {
           ></div>
 
           <div
-            dir={t.dir}
-            className="relative bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-100 flex flex-col gap-5 animate-[scaleUp_0.25s_ease-out] z-10"
+            className="modal-beam-wrapper beam-active overflow-hidden animate-[scaleUp_0.25s_ease-out] z-10"
             style={{ width: 'min(92vw, 30rem)', minWidth: 'min(92vw, 20rem)' }}
+          >
+          <div
+            dir={t.dir}
+            className="modal-beam-inner relative p-6 md:p-8 shadow-2xl flex flex-col gap-5"
           >
             <button 
               onClick={() => setIsPrescriptionModalOpen(false)}
@@ -1904,6 +1914,7 @@ export default function Storefront() {
                 </button>
               </div>
             )}
+          </div>
           </div>
         </div>
       )}

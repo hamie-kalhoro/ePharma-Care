@@ -11,14 +11,25 @@ const aiActions = [
 export default function FloatingAIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+    alert(`AI Assistant Query Sent: "${inputValue}"\n\n(This is a simulated response)`);
+    setInputValue('');
+  };
+
+  const handleActionClick = (label: string) => {
+    alert(`Triggering AI Action: ${label}`);
+  };
+
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none" style={{ zIndex: 9999 }}>
       {/* Chat Window Overlay */}
       <div 
-        className={`mb-4 w-[350px] max-w-[calc(100vw-3rem)] bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex flex-col transition-all duration-300 origin-bottom-right ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 pointer-events-none translate-y-4'}`}
+        className={`mb-4 w-[350px] max-w-[calc(100vw-3rem)] pointer-events-auto bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden flex flex-col transition-all duration-300 origin-bottom-right ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 pointer-events-none translate-y-4'}`}
         style={{ height: '500px', maxHeight: 'calc(100vh - 8rem)' }}
       >
         {/* Header */}
@@ -57,7 +68,11 @@ export default function FloatingAIAssistant() {
           <div className="mt-2 space-y-2">
             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Quick Actions</h4>
             {aiActions.map((action) => (
-              <button key={action.label} className="w-full bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 p-3 rounded-xl text-left flex items-center gap-3 transition-colors shadow-sm group">
+              <button 
+                key={action.label} 
+                onClick={() => handleActionClick(action.label)}
+                className="w-full bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 p-3 rounded-xl text-left flex items-center gap-3 transition-colors shadow-sm group"
+              >
                 <span className="material-symbols-outlined text-emerald-600 group-hover:scale-110 transition-transform">{action.icon}</span>
                 <span className="text-sm font-semibold text-slate-800">{action.label}</span>
               </button>
@@ -73,10 +88,16 @@ export default function FloatingAIAssistant() {
             </button>
             <input 
               type="text" 
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
               placeholder="Ask anything..." 
               className="flex-1 bg-transparent border-none outline-none text-sm text-slate-800 placeholder:text-slate-400 px-1"
             />
-            <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center justify-center shadow-sm shrink-0">
+            <button 
+              onClick={handleSend}
+              className="w-8 h-8 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center justify-center shadow-sm shrink-0"
+            >
               <span className="material-symbols-outlined text-[16px]">send</span>
             </button>
           </div>
@@ -86,25 +107,18 @@ export default function FloatingAIAssistant() {
       {/* Floating Action Button */}
       <button
         onClick={toggleOpen}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className="group flex items-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-2xl hover:shadow-emerald-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-emerald-500/30"
+        className={`pointer-events-auto flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl hover:shadow-emerald-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-emerald-500/30 w-16 h-16`}
       >
         <span 
-          className={`material-symbols-outlined text-2xl transition-transform duration-500 ${isOpen ? 'rotate-180 scale-0 opacity-0 absolute' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[28px] transition-transform duration-500 absolute ${isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           smart_toy
         </span>
         <span 
-          className={`material-symbols-outlined text-2xl transition-transform duration-500 ${!isOpen ? '-rotate-180 scale-0 opacity-0 absolute' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[28px] transition-transform duration-500 absolute ${!isOpen ? '-rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           close
         </span>
-        
-        {/* Expandable Text (only shown when closed and hovered/initially) */}
-        <div className={`overflow-hidden transition-all duration-300 whitespace-nowrap ${isHovered && !isOpen ? 'max-w-[120px] ml-1' : 'max-w-0'}`}>
-          <span className="font-bold text-sm tracking-wide">AI Assistant</span>
-        </div>
 
         {/* Pulse Effect */}
         {!isOpen && (

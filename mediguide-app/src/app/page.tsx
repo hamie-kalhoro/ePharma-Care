@@ -794,45 +794,20 @@ export default function Storefront() {
                 <span className="text-[10px] text-slate-400 font-semibold tracking-widest uppercase mt-0.5">{t.premiumPharmacy}</span>
               </div>
             </div>
-            
-            {/* Mobile Actions Container */}
-            <div className="flex md:hidden items-center gap-4">
-              {/* Notification Icon */}
-              <button 
-                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                className="relative text-slate-600 hover:text-emerald-600 p-1"
-              >
-                <span className="material-symbols-outlined text-2xl">notifications</span>
-                {notifications.some(n => n.unread) && (
-                  <span className="absolute top-1 end-1 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white"></span>
-                )}
-              </button>
-
-              {/* Cart Toggle */}
-              <button 
-                onClick={() => setIsCartOpen(true)}
-                className="relative text-slate-600 hover:text-emerald-600 p-1"
-              >
-                <span className="material-symbols-outlined text-2xl">shopping_cart</span>
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1.5 -end-1.5 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center border-2 border-white">
-                    {cartItemCount}
-                  </span>
-                )}
-              </button>
-            </div>
           </div>
 
           {/* Search Bar */}
           <div className="w-full md:w-[450px] lg:w-[580px] relative z-40" ref={searchContainerRef}>
             <div className={`search-beam-wrapper overflow-hidden ${isSearchFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
               <div className="relative flex items-center w-full search-beam-inner">
-                <div className="absolute inset-y-0 start-0 ps-3.5 flex items-center pointer-events-none z-10">
-                  <span className="material-symbols-outlined text-slate-400">search</span>
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-20">
+                  <span className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-600 flex items-center justify-center shadow-sm">
+                    <span className="material-symbols-outlined text-[19px]">search</span>
+                  </span>
                 </div>
                 <input 
                   type="text" 
-                  className="block w-full ps-10 pe-24 py-3 border-transparent rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white text-sm transition-all z-10 relative" 
+                  className="block w-full ps-12 pe-24 py-3 border-transparent rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white text-sm transition-all z-10 relative" 
                   placeholder={t.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -922,6 +897,7 @@ export default function Storefront() {
               </div>
             )}
           </div>
+
 
           {/* Action Trays (Notifications, Settings, Cart) */}
           <div className="hidden md:flex items-center gap-6">
@@ -1135,7 +1111,7 @@ export default function Storefront() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-10 py-8 space-y-12">
+      <main className="max-w-7xl mx-auto px-4 md:px-10 py-8 pb-24 md:pb-8 space-y-12">
         
         {/* ========================================== */}
         {/* HERO SECTION — Premium Unsplash Backgrounds */}
@@ -1327,7 +1303,7 @@ export default function Storefront() {
 
           {/* Grid */}
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map(product => (
                 <div 
                   key={product.id} 
@@ -1807,6 +1783,195 @@ export default function Storefront() {
                 </button>
               </div>
 
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,480px)] md:hidden">
+        <div className="bg-white/95 backdrop-blur-xl border border-slate-200 shadow-lg rounded-full px-3 py-2 flex items-center justify-between">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex flex-col items-center gap-1 text-emerald-600"
+          >
+            <span className="material-symbols-outlined text-[20px]">home</span>
+            <span className="text-[9px] font-bold uppercase tracking-wider">Home</span>
+          </button>
+          <button
+            onClick={() => {
+              const element = document.getElementById('products-section');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600"
+          >
+            <span className="material-symbols-outlined text-[20px]">grid_view</span>
+            <span className="text-[9px] font-bold uppercase tracking-wider">Categories</span>
+          </button>
+          <button
+            onClick={() => setIsSettingsOpen(prev => !prev)}
+            className="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600"
+          >
+            <span className="material-symbols-outlined text-[20px]">tune</span>
+            <span className="text-[9px] font-bold uppercase tracking-wider">{t.config}</span>
+          </button>
+          <button
+            onClick={() => setIsNotificationsOpen(prev => !prev)}
+            className="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600 relative"
+          >
+            <span className="material-symbols-outlined text-[20px]">notifications</span>
+            {notifications.some(n => n.unread) && (
+              <span className="absolute -top-1 end-1 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
+            )}
+            <span className="text-[9px] font-bold uppercase tracking-wider">{t.alerts}</span>
+          </button>
+          <button
+            onClick={() => setIsCartOpen(prev => !prev)}
+            className="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600"
+          >
+            <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+            <span className="text-[9px] font-bold uppercase tracking-wider">{t.cartLabel}</span>
+          </button>
+          <Link
+            href="/login"
+            className="flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600"
+          >
+            <span className="material-symbols-outlined text-[20px]">person</span>
+            <span className="text-[9px] font-bold uppercase tracking-wider">{t.signIn || 'Login'}</span>
+          </Link>
+        </div>
+      </nav>
+
+      {isNotificationsOpen && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,480px)] md:hidden">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-100 py-3">
+            <div className="flex justify-between items-center px-4 pb-2 border-b border-slate-100">
+              <span className="font-bold text-slate-800 text-xs">{t.notificationsTitle}</span>
+              <button 
+                onClick={markAllRead}
+                className="text-[10px] text-emerald-600 font-semibold hover:underline"
+              >
+                {t.markAllRead}
+              </button>
+            </div>
+            <div className="max-h-64 overflow-y-auto mt-2">
+              {notifications.map(notif => (
+                <div 
+                  key={notif.id} 
+                  className={`px-4 py-3 border-b border-slate-50 last:border-b-0 hover:bg-slate-50 transition-colors flex gap-2.5 ${notif.unread ? 'bg-emerald-50/30' : ''}`}
+                >
+                  <div className={`w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0 ${notif.unread ? 'opacity-100' : 'opacity-0'}`}></div>
+                  <div className="flex-1">
+                    <p className="text-xs text-slate-700 font-medium leading-normal">{notif.text}</p>
+                    <span className="text-[10px] text-slate-400 mt-1 block">{notif.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isSettingsOpen && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,480px)] md:hidden">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-4 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span className="font-bold text-xs text-slate-800">{t.storeConfig}</span>
+              <button
+                onClick={() => setIsSettingsOpen(false)}
+                className="text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            {/* Currency Picker */}
+            <div className="space-y-1.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t.currencyLabel}</span>
+              <div className="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-lg">
+                <button 
+                  onClick={() => setCurrency('PKR')}
+                  className={`text-xs py-1.5 font-bold rounded-md transition-all ${currency === 'PKR' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  PKR (Rs.)
+                </button>
+                <button 
+                  onClick={() => setCurrency('USD')}
+                  className={`text-xs py-1.5 font-bold rounded-md transition-all ${currency === 'USD' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  USD ($)
+                </button>
+              </div>
+            </div>
+
+            {/* Language Selector */}
+            <div className="space-y-1.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t.languageLabel}</span>
+              <div className="grid grid-cols-2 gap-2 bg-slate-50 p-1 rounded-lg">
+                <button 
+                  onClick={() => setLang('EN')}
+                  className={`text-xs py-1.5 font-bold rounded-md transition-all ${lang === 'EN' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  English
+                </button>
+                <button 
+                  onClick={() => setLang('UR')}
+                  className={`text-xs py-1.5 font-bold rounded-md transition-all ${lang === 'UR' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                >
+                  اردو (Urdu)
+                </button>
+              </div>
+            </div>
+
+            {/* JWT Secure Auth Panel */}
+            <div className="space-y-2 pt-3 border-t border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                <span className="material-symbols-outlined text-[12px]">shield</span> {t.secureAuth}
+              </span>
+              {authorizedUser ? (
+                <div className="space-y-2">
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 text-center">
+                    <span className="text-[10px] font-bold text-emerald-700 block">{t.authenticated}</span>
+                    <span className="text-[11px] font-extrabold text-emerald-900 block mt-0.5">{authorizedUser.name}</span>
+                    <span className="text-[9px] text-emerald-600 uppercase tracking-wider">{authorizedUser.role}</span>
+                  </div>
+                  <button
+                    onClick={handleRoleLogout}
+                    className="w-full text-[10px] py-1.5 bg-rose-50 text-rose-600 border border-rose-200 rounded-lg font-bold uppercase tracking-wider hover:bg-rose-100 transition-colors"
+                  >
+                    {t.terminateSession}
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleRoleLogin} className="space-y-2">
+                  <select
+                    value={authRole}
+                    onChange={(e) => setAuthRole(e.target.value)}
+                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                  >
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="pharmacist">Pharmacist</option>
+                    <option value="admin">Admin</option>
+                    <option value="ai-assistant">AI Assistant</option>
+                  </select>
+                  <input
+                    type="password"
+                    value={authPasskey}
+                    onChange={(e) => setAuthPasskey(e.target.value)}
+                    placeholder={t.enterPasskey}
+                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 outline-none focus:ring-1 focus:ring-emerald-500"
+                  />
+                  {authError && <p className="text-[10px] text-rose-500 font-semibold">{authError}</p>}
+                  {authSuccessMsg && <p className="text-[10px] text-emerald-600 font-semibold">{authSuccessMsg}</p>}
+                  <button
+                    type="submit"
+                    className="w-full text-[10px] py-1.5 bg-emerald-600 text-white rounded-lg font-bold uppercase tracking-wider hover:bg-emerald-700 transition-colors"
+                  >
+                    {t.authenticate}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

@@ -107,15 +107,15 @@ export default function FloatingAIAssistant() {
       {/* Floating Action Button */}
       <button
         onClick={toggleOpen}
-        className={`pointer-events-auto flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl hover:shadow-emerald-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-emerald-500/30 w-16 h-16`}
+        className={`pointer-events-auto flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl hover:shadow-emerald-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-emerald-500/30 w-14 h-14 group`}
       >
         <span 
-          className={`material-symbols-outlined text-[28px] transition-transform duration-500 absolute ${isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[24px] transition-transform duration-500 absolute ${isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           smart_toy
         </span>
         <span 
-          className={`material-symbols-outlined text-[28px] transition-transform duration-500 absolute ${!isOpen ? '-rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[24px] transition-transform duration-500 absolute ${!isOpen ? '-rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           close
         </span>
@@ -123,6 +123,15 @@ export default function FloatingAIAssistant() {
         {/* Pulse Effect */}
         {!isOpen && (
           <span className="absolute inset-0 rounded-full border-2 border-emerald-500/50 animate-ping z-[-1]"></span>
+        )}
+
+        {/* Tooltip */}
+        {!isOpen && (
+          <div className="absolute end-full me-4 px-3 py-1.5 bg-slate-800 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
+            AI Assistant
+            {/* Triangle */}
+            <div className="absolute top-1/2 start-full -translate-y-1/2 border-[5px] border-transparent border-l-slate-800"></div>
+          </div>
         )}
       </button>
     </div>

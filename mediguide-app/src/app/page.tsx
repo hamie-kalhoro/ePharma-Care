@@ -780,7 +780,7 @@ export default function Storefront() {
       </div>
 
       {/* Main Header */}
-      <header className={`bg-white w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 shadow-md border-b border-slate-100' : 'border-b border-slate-200 relative'}`}>
+      <header className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 bg-white/75 backdrop-blur-xl shadow-lg shadow-slate-200/20 border-b border-slate-100/50' : 'relative bg-white border-b border-slate-200'}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-10 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Logo */}
@@ -1331,11 +1331,11 @@ export default function Storefront() {
               {filteredProducts.map(product => (
                 <div 
                   key={product.id} 
-                  className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col h-full relative"
+                  className="bg-white rounded-xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group flex flex-col h-full relative"
                 >
                   
                   {/* Image/Icon Area */}
-                  <div className="relative aspect-square bg-slate-50 rounded-xl mb-4 flex items-center justify-center group-hover:scale-102 transition-transform duration-300 overflow-hidden cursor-pointer"
+                       <div className="relative aspect-square bg-slate-50 rounded-lg mb-4 flex items-center justify-center group-hover:scale-102 transition-transform duration-300 overflow-hidden cursor-pointer"
                        onClick={() => setSelectedProduct(product)}
                   >
                     <img 
@@ -1518,12 +1518,12 @@ export default function Storefront() {
             <h4 className="text-slate-800 font-hanken font-bold mb-4 uppercase text-sm tracking-wider">{t.mailingList}</h4>
             <p className="text-xs text-slate-500 mb-4 font-medium">{t.mailingListDesc}</p>
             <form onSubmit={handleSubscribe} className="space-y-3">
-              <div className={`email-beam-wrapper overflow-hidden ${isEmailFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
+              <div className={`email-beam-wrapper email-pill overflow-hidden ${isEmailFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
                 <div className="relative flex items-center w-full email-beam-inner">
                   <input 
                     type="email" 
                     placeholder={t.emailPlaceholder}
-                    className="w-full bg-white border-none px-4 py-3 text-sm outline-none text-slate-800 placeholder-slate-400 focus:outline-none transition-all font-medium rounded-[calc(var(--radius-xl)-2px)] relative z-10" 
+                    className="w-full bg-white border-none px-4 py-3 text-sm outline-none text-slate-800 placeholder-slate-400 focus:outline-none transition-all font-medium rounded-full relative z-10" 
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     onFocus={() => setIsEmailFocused(true)}
@@ -1536,7 +1536,7 @@ export default function Storefront() {
               <button 
                 type="submit"
                 disabled={emailSubmitting}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer uppercase tracking-wider"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-6 py-3 rounded-full transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer uppercase tracking-wider"
               >
                 {emailSubmitting ? t.joining : t.join}
               </button>

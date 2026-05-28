@@ -486,6 +486,26 @@ a:hover {
   background: var(--color-outline);
 }
 
+/* Quote text wrapping guard */
+.quote-text {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+  text-wrap: balance;
+}
+
+.quote-panel {
+  width: 100%;
+  max-width: 42rem;
+}
+
+@media (min-width: 1280px) {
+  .quote-panel {
+    max-width: 48rem;
+  }
+}
+
 /* ============================================
    FORM ELEMENTS
    ============================================ */
@@ -758,6 +778,15 @@ a:hover {
   z-index: 1;
   border-radius: calc(var(--radius-xl) - 2px);
   background: white;
+}
+
+/* Pill variant for footer email input */
+.email-pill {
+  border-radius: 9999px;
+}
+
+.email-pill .email-beam-inner {
+  border-radius: 9999px;
 }
 
 /* Modal Beam Animation (RX Upload etc.) */

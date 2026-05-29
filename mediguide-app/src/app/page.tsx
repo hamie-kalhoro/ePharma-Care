@@ -800,14 +800,12 @@ export default function Storefront() {
           <div className="w-full md:w-[450px] lg:w-[580px] relative z-40" ref={searchContainerRef}>
             <div className={`search-beam-wrapper overflow-hidden ${isSearchFocused ? 'beam-active shadow-lg shadow-emerald-500/20' : ''}`}>
               <div className="relative flex items-center w-full search-beam-inner">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-20">
-                  <span className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-600 flex items-center justify-center shadow-sm">
-                    <span className="material-symbols-outlined text-[19px]">search</span>
-                  </span>
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-20 text-slate-400">
+                  <span className="material-symbols-outlined text-[20px]">search</span>
                 </div>
                 <input 
                   type="text" 
-                  className="block w-full ps-12 pe-24 py-3 border-transparent rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white text-sm transition-all z-10 relative" 
+                  className="block w-full ps-10 pe-24 py-3 border-transparent rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white text-sm transition-all z-10 relative" 
                   placeholder={t.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -1111,7 +1109,7 @@ export default function Storefront() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-10 py-8 pb-24 md:pb-8 space-y-12">
+      <main className="max-w-7xl mx-auto px-4 md:px-10 py-8 pb-40 md:pb-8 space-y-12">
         
         {/* ========================================== */}
         {/* HERO SECTION — Premium Unsplash Backgrounds */}

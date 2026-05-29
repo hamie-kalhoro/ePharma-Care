@@ -26,7 +26,7 @@ export default function FloatingConsultation() {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start pointer-events-none" style={{ zIndex: 9999 }}>
+    <div className="fixed bottom-24 left-4 sm:bottom-6 sm:left-6 z-50 flex flex-col items-start pointer-events-none" style={{ zIndex: 9999 }}>
       {/* Chat/Booking Window Overlay */}
       <div 
         className={`mb-4 w-[350px] max-w-[calc(100vw-3rem)] pointer-events-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden flex flex-col transition-all duration-300 origin-bottom-left ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 pointer-events-none translate-y-4'}`}
@@ -118,15 +118,15 @@ export default function FloatingConsultation() {
       {/* Floating Action Button */}
       <button
         onClick={toggleOpen}
-        className={`pointer-events-auto flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl hover:shadow-blue-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-blue-500/30 w-14 h-14 group`}
+        className={`pointer-events-auto flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl hover:shadow-blue-600/30 transition-all duration-300 relative focus:outline-none focus:ring-4 focus:ring-blue-500/30 w-12 h-12 sm:w-14 sm:h-14 group`}
       >
         <span 
-          className={`material-symbols-outlined text-[24px] transition-transform duration-500 absolute ${isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[22px] sm:text-[24px] transition-transform duration-500 absolute ${isOpen ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           stethoscope
         </span>
         <span 
-          className={`material-symbols-outlined text-[24px] transition-transform duration-500 absolute ${!isOpen ? '-rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
+          className={`material-symbols-outlined text-[22px] sm:text-[24px] transition-transform duration-500 absolute ${!isOpen ? '-rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'}`}
         >
           close
         </span>
@@ -138,7 +138,7 @@ export default function FloatingConsultation() {
 
         {/* Tooltip */}
         {!isOpen && (
-          <div className="absolute start-full ms-4 px-3 py-1.5 bg-slate-800 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg z-50">
+          <div className="absolute start-full ms-4 px-3 py-1.5 bg-slate-800 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg z-50 hidden sm:block">
             Live Consultation
             {/* Triangle */}
             <div className="absolute top-1/2 end-full -translate-y-1/2 border-[5px] border-transparent border-r-slate-800"></div>

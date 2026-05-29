@@ -3,12 +3,19 @@ import "./globals.css";
 import FloatingAIAssistant from "@/components/FloatingAIAssistant";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import FloatingConsultation from "@/components/FloatingConsultation";
+import PwaRegister from "@/components/PwaRegister";
 
 export const metadata: Metadata = {
   title: "MediGuide Pro | Premium Healthcare Platform",
   description: "Advanced AI-powered healthcare platform with premium pharmacy services, real-time patient monitoring, and intelligent drug interaction analysis. HIPAA-compliant and secure.",
   keywords: ["healthcare", "pharmacy", "AI", "medical", "telemedicine", "patient portal", "drug interactions"],
   authors: [{ name: "MediGuide Pro" }],
+  applicationName: "MediGuide Store",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icons/icon.svg",
+    apple: "/icons/icon.svg",
+  },
   openGraph: {
     title: "MediGuide Pro | Premium Healthcare Platform",
     description: "Advanced AI-powered healthcare platform with premium pharmacy services",
@@ -41,9 +48,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/icon.svg" />
       </head>
-      <body className="min-h-screen flex flex-col font-body antialiased selection:bg-emerald-500/30 selection:text-emerald-900">
+      <body
+        className="min-h-screen flex flex-col font-body antialiased selection:bg-emerald-500/30 selection:text-emerald-900"
+        suppressHydrationWarning
+      >
         {/* Skip to content link for accessibility */}
         <a href="#main-content" className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:font-medium">
           Skip to main content
@@ -51,6 +62,7 @@ export default function RootLayout({
 
         {children}
         
+        <PwaRegister />
         <FloatingWhatsApp />
         <FloatingAIAssistant />
         <FloatingConsultation />

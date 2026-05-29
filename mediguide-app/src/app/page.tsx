@@ -197,7 +197,7 @@ const TRANSLATIONS: Record<string, Record<string, any>> = {
     pharmacistHelpDesc: '24/7 expert tele-consultation',
     secureOrders: 'Secure Orders',
     secureOrdersDesc: 'Fully encrypted checkout gateway',
-    trustedBrands: 'Trusted Pharmaceutical Brands',
+    trustedBrands: 'Brands will be added later on...',
     premiumMarketplace: 'Premium Marketplace',
     trendingProducts: 'Trending Products',
     trendingProductsDesc: 'Guaranteed authentic pharmaceuticals & wellness products.',
@@ -315,7 +315,7 @@ const TRANSLATIONS: Record<string, Record<string, any>> = {
     pharmacistHelpDesc: '24/7 ماہر ٹیلی مشاورت',
     secureOrders: 'محفوظ آرڈرز',
     secureOrdersDesc: 'مکمل انکرپٹڈ چیک آؤٹ',
-    trustedBrands: 'قابل اعتماد فارماسیوٹیکل برانڈز',
+    trustedBrands: 'برانڈز بعد میں شامل کیے جائیں گے',
     premiumMarketplace: 'پریمیم مارکیٹ پلیس',
     trendingProducts: 'ٹرینڈنگ مصنوعات',
     trendingProductsDesc: 'تصدیق شدہ اصلی ادویات اور صحت کی مصنوعات۔',
@@ -1220,40 +1220,40 @@ export default function Storefront() {
 
         {/* Features Strip */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-[22px]">verified</span>
+          <div className="bg-[#EFEEEB] p-3 md:p-4 rounded-lg flex items-center gap-3 md:gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+            <div className="w-9 h-9 md:w-11 md:h-11 bg-blue-50 text-blue-600 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[18px] md:text-[22px]">verified</span>
             </div>
             <div>
-              <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wide">{t.authentic}</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">{t.authenticDesc}</p>
+              <h4 className="font-extrabold text-slate-800 text-[11px] md:text-xs uppercase tracking-wide leading-tight">{t.authentic}</h4>
+              <p className="text-[10px] md:text-[11px] text-slate-500 mt-0.5 leading-snug">{t.authenticDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-[22px]">local_shipping</span>
+          <div className="bg-[#EFEEEB] p-3 md:p-4 rounded-lg flex items-center gap-3 md:gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+            <div className="w-9 h-9 md:w-11 md:h-11 bg-emerald-50 text-emerald-600 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[18px] md:text-[22px]">local_shipping</span>
             </div>
             <div>
-              <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wide">{t.fastDelivery}</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">{t.fastDeliveryDesc}</p>
+              <h4 className="font-extrabold text-slate-800 text-[11px] md:text-xs uppercase tracking-wide leading-tight">{t.fastDelivery}</h4>
+              <p className="text-[10px] md:text-[11px] text-slate-500 mt-0.5 leading-snug">{t.fastDeliveryDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-[22px]">support_agent</span>
+          <div className="bg-[#EFEEEB] p-3 md:p-4 rounded-lg flex items-center gap-3 md:gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+            <div className="w-9 h-9 md:w-11 md:h-11 bg-amber-50 text-amber-600 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[18px] md:text-[22px]">support_agent</span>
             </div>
             <div>
-              <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wide">{t.pharmacistHelp}</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">{t.pharmacistHelpDesc}</p>
+              <h4 className="font-extrabold text-slate-800 text-[11px] md:text-xs uppercase tracking-wide leading-tight">{t.pharmacistHelp}</h4>
+              <p className="text-[10px] md:text-[11px] text-slate-500 mt-0.5 leading-snug">{t.pharmacistHelpDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-[22px]">verified_user</span>
+          <div className="bg-[#EFEEEB] p-3 md:p-4 rounded-lg flex items-center gap-3 md:gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+            <div className="w-9 h-9 md:w-11 md:h-11 bg-rose-50 text-rose-600 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[18px] md:text-[22px]">verified_user</span>
             </div>
             <div>
-              <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wide">{t.secureOrders}</h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">{t.secureOrdersDesc}</p>
+              <h4 className="font-extrabold text-slate-800 text-[11px] md:text-xs uppercase tracking-wide leading-tight">{t.secureOrders}</h4>
+              <p className="text-[10px] md:text-[11px] text-slate-500 mt-0.5 leading-snug">{t.secureOrdersDesc}</p>
             </div>
           </div>
         </section>

@@ -1220,7 +1220,7 @@ export default function Storefront() {
 
         {/* Features Strip */}
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">verified</span>
             </div>
@@ -1229,7 +1229,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.authenticDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">local_shipping</span>
             </div>
@@ -1238,7 +1238,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.fastDeliveryDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">support_agent</span>
             </div>
@@ -1247,7 +1247,7 @@ export default function Storefront() {
               <p className="text-[11px] text-slate-500 mt-0.5">{t.pharmacistHelpDesc}</p>
             </div>
           </div>
-          <div className="bg-[#EFEEEB] p-4 rounded-2xl flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
+          <div className="bg-[#EFEEEB] p-4 rounded-lg flex items-center gap-4 shadow-sm border border-[#EFEEEB] hover:shadow-md transition-shadow">
             <div className="w-11 h-11 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <span className="material-symbols-outlined text-[22px]">verified_user</span>
             </div>
@@ -1258,18 +1258,22 @@ export default function Storefront() {
           </div>
         </section>
 
-        {/* Brand showcase logo strip */}
-        <section className="bg-[#EFEEEB] py-6 px-8 rounded-3xl border border-[#EFEEEB] shadow-sm space-y-4">
-          <div className="text-center">
-            <span className="text-[10px] font-extrabold tracking-widest text-slate-400 uppercase">{t.trustedBrands}</span>
-          </div>
-          <div className="flex flex-wrap items-center justify-around gap-6 opacity-60 hover:opacity-85 transition-opacity py-2">
-            {BRAND_LOGOS.map((brand, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <span className="font-hanken text-lg font-black tracking-tighter text-slate-800">{brand.name}</span>
-                <span className="text-[8px] font-bold uppercase tracking-wider text-emerald-600 mt-0.5">{brand.label}</span>
+        {/* Brand showcase marquee */}
+        <section className="relative overflow-hidden rounded-3xl border border-[#EFEEEB] shadow-sm bg-[#EFEEEB]">
+          <div className="px-6 py-5 md:px-10 md:py-7 space-y-3">
+            <div className="text-center">
+              <span className="text-[10px] font-extrabold tracking-widest text-slate-500 uppercase">{t.trustedBrands}</span>
+            </div>
+            <div className="brand-marquee">
+              <div className="brand-marquee-track opacity-80 hover:opacity-95 transition-opacity">
+                {[...BRAND_LOGOS, ...BRAND_LOGOS].map((brand, i) => (
+                  <div key={`${brand.name}-${i}`} className="brand-marquee-item flex flex-col items-center min-w-[140px]">
+                    <span className="font-hanken text-lg font-black tracking-tighter text-slate-800">{brand.name}</span>
+                    <span className="text-[8px] font-bold uppercase tracking-wider text-emerald-600 mt-0.5">{brand.label}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
